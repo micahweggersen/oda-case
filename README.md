@@ -1,46 +1,76 @@
-# Getting Started with Create React App
+# How to start the project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Clone the project
+2. Install the dependencies and start the project
 
-## Available Scripts
+   `yarn install`
 
-In the project directory, you can run:
+   followed by
 
-### `yarn start`
+   `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+   this will start the project at http://localhost:3000
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   Next, you need to start the server which handles proxy requests from the client to the API. To do this, open a new terminal and run the following commands from the root of the project:
 
-### `yarn test`
+   `cd api`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   This is the server directory. Install the dependencies using python. You can do this by running the following command:
 
-### `yarn build`
+   `pip install -r requirements.txt`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+   Next, run the server using the following command:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+   `python api.py`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+   This will start the server at http://localhost:5000
 
-### `yarn eject`
+## Backend
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+The backend is a Flask server that serves as a proxy to the API. The server is located in the `api` directory. The server is a simple Flask server that listens on port 5000. The server has multiple endpoints and could be more optimized if time allowed. The server is responsible for forwarding requests to the ODA API and caching the responses.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Endpoints
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 1. `/proxy/oda/query` (GET)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- **Description**: Forwards a query to the ODA API.
+- **Parameters**:
+  - `q` (required): The query string to search for.
+- **Response**: JSON data from the ODA API corresponding to the query.
+- **Caching**: Responses are cached based on query parameters.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 2. `/proxy/oda/all` (GET)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Description**: Retrieves all items from the ODA API without any query parameters.
+- **Response**: JSON data from the ODA API.
+- **Caching**: Responses are cached globally (no query parameters).
+
+---
+
+### 3. `/proxy/oda/filter` (GET)
+
+- **Description**: Forwards a query with filters to the ODA API.
+- **Parameters**:
+  - `q` (required): The query string to search for.
+  - `filters` (optional): Filters to refine the search.
+- **Response**: Filtered JSON data from the ODA API.
+- **Caching**: Responses are cached based on query parameters.
+
+## Frontend
+
+It has the following main components:
+
+1. Filtered Search: This component is used to search for items in the ODA API. The user can enter a query string and apply filters to refine the search results. The main goal is to query the API and display the results in a organized manner.
+2. "Ditt Oda" Section: Live search of all products in the ODA API. The user will receive a list of all products in the API as they are typing. There is a small delay to prevent too many requests to the server.
+3. Cart: This component is used to display the items that the user has added to the cart. The user can remove items from the cart. The focus is to use information across the application to display the cart in a organized manner.
+
+## Improvements
+
+1. Functional category search
+2. Add more filters
+3. Overhaul the UI in regardes to accessibility and responsiveness, should be some accessibility already but could be improved.
+4. Ditt Oda could use AI to suggest products based on user behavior, search history and persnal list data.
+5. Fun and interactive UI elements to make the user experience more engaging. For example, animations, transitions, and other interactive elements.
+6. The list goes on...
