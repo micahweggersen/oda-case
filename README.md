@@ -74,3 +74,20 @@ It has the following main components:
 4. Ditt Oda could use AI to suggest products based on user behavior, search history and persnal list data.
 5. Fun and interactive UI elements to make the user experience more engaging. For example, animations, transitions, and other interactive elements.
 6. The list goes on...
+
+# Design Decisions
+
+The project has focused on modular design decitions to improve maintainability, scalability and readability. There is also a focus on using TypeScript as it creates more reliable and less error prone code. Types is in my opinion a must have when dealing with large api's and complex data structures. This is especially important in larger projects where the codebase can become complex and harder to maintain.
+
+That is also why useContext is used to manage global state. This makes it easier to share data between components and reduces the need for prop drilling which can make the code harder to read and maintain.
+
+The project is also using a proxy server to handle requests to the ODA API. This is done to avoid CORS issues and to cache responses to reduce the number of requests to the API. The server is a Flask server that forwards requests to the ODA API and caches the responses. I have not spent much time on this aspect as i wanted to focus on interacting with the API and displaying the data in a organized manner.
+
+# Challenges
+
+The api is good to use but since there are no availabe documentation that i know of you need to reversengeneer the api and discover how its used. The challenge is to understand how the API works and how to query it to get the desired results. But once you understand how the API works, it is relatively easy to query it and get the data you need.
+
+# More time
+
+With more time i would have focused on AI integraiotns. I see this area as a lot of potential that can benfit and improve user experience.
+I would also have taken more time to plan the project. This aspect of engeneering is one of the most important parts of getting a good end result.
