@@ -1,5 +1,5 @@
 import { Select, SelectProps } from 'antd';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { DataType, Product, QuerySettings, SearchSettings } from '../types';
 import { fetchData } from '../utils/fetchData';
 import { filterResults } from '../utils/filter';
@@ -20,28 +20,28 @@ const SearchContainer: React.FC<SearchProps> = ({
   const [value, setValue] = useState<number>();
   const [results, setResults] = useState<DataType['items']>([]);
 
-  const handleSearch = (searchValue: string) => {
-    setTimeout(() => {
-      fetchData(searchValue, query).then(results => {
-        if (!results) {
-          return;
-        }
-        const filteredResults = filterResults(results as DataType);
+  const handleSearch = useCallback(
+    async (searchValue: string) => {
+      const results = await fetchData(searchValue, query);
+      if (!results) {
+        return;
+      }
+      const filteredResults = filterResults(results as DataType);
 
-        setResults(filteredResults);
-        setSelectData(
-          filteredResults.map((item, i) => ({
-            value: i,
-            label:
-              'name' in item.attributes
-                ? item.attributes.name + ' - ' + item.type
-                : 'display_name' in item.attributes &&
-                  item.attributes.display_name + ' - ' + item.type,
-          })),
-        );
-      });
-    }, 300);
-  };
+      setResults(filteredResults);
+      setSelectData(
+        filteredResults.map((item, i) => ({
+          value: i,
+          label:
+            'name' in item.attributes
+              ? item.attributes.name + ' - ' + item.type
+              : 'display_name' in item.attributes &&
+                item.attributes.display_name + ' - ' + item.type,
+        })),
+      );
+    },
+    [query], // Dependencies for useCallback
+  );
 
   const handleChange = (newValue: number) => {
     const item = results[newValue];
@@ -51,6 +51,7 @@ const SearchContainer: React.FC<SearchProps> = ({
     }
     setValue(newValue);
   };
+
   return (
     <>
       <Select
