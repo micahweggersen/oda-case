@@ -13,7 +13,7 @@
 
    Next, you need to start the server which handles proxy requests from the client to the API. To do this, open a new terminal and run the following commands from the root of the project:
 
-   `cd api`
+   `cd backend`
 
    This is the server directory. Install the dependencies using python. You can do this by running the following command:
 
